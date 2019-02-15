@@ -1,4 +1,14 @@
 const express = require("express");
 const app = express();
 
-app.get("/", (req, res) => res.send("hello"));
+function doSomething(duration) {
+  const start = Date.now();
+  while (Date.now() - start < duration) {}
+}
+
+app.get("/", (req, res) => {
+  doSomething(5000);
+  res.send("hello");
+});
+
+app.listen(3000);
