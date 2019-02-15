@@ -2,11 +2,18 @@
 const express = require("express");
 const app = express();
 const crypto = require("crypto");
+const Worker = require("webworker-threads").Worker;
+
 app.get("/", (req, res) => {
-  crypto.pbkdf2("a", "b", 100000, 512, "sha512", () => {
-    res.send("hello");
-    console.log("Loaded hashing");
-  });
+  const worker = new Worker(function() {});
+
+  worker.onmessage = function() {
+    this.onmessage = function() {
+      postMessage();
+    };
+  };
+
+  worker.postMessage();
 });
 
 app.get("/fast", (req, res) => {
