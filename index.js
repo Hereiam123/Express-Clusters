@@ -15,7 +15,8 @@ app.get("/", (req, res) => {
   });
 
   worker.onmessage = function(myCount) {
-    console.log(myCount);
+    console.log(myCount.data);
+    res.send("" + myCount.data + "");
   };
 
   worker.postMessage();
