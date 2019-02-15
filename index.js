@@ -5,13 +5,17 @@ const crypto = require("crypto");
 const Worker = require("webworker-threads").Worker;
 
 app.get("/", (req, res) => {
-  const worker = new Worker(function() {});
-
-  worker.onmessage = function() {
+  const worker = new Worker(function() {
     this.onmessage = function() {
-      postMessage();
+      let counter = 0;
+      while (counter < 1e9) {
+        counter++;
+      }
+      postMessage(counter);
     };
-  };
+  });
+
+  worker.onmessage = function() {};
 
   worker.postMessage();
 });
