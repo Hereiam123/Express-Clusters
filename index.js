@@ -6,6 +6,7 @@ if (cluster.isMaster) {
   //Index.js executed in child mode in else
   console.log("True Master");
   cluster.fork();
+  cluster.fork();
 } else {
   const express = require("express");
   const app = express();
@@ -13,9 +14,8 @@ if (cluster.isMaster) {
   app.get("/", (req, res) => {
     crypto.pbkdf2("a", "b", 100000, 512, "sha512", () => {
       res.send("hello");
+      console.log("Loaded hashing");
     });
-
-    console.log("Loaded hashing");
   });
 
   app.get("/fast", (req, res) => {
