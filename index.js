@@ -1,5 +1,5 @@
+process.env.UV_THREADPOOL_SIZE = 1;
 const cluster = require("cluster");
-const crypto = require("crypto");
 
 //Is the file executed in master mode
 if (cluster.isMaster) {
@@ -9,13 +9,13 @@ if (cluster.isMaster) {
 } else {
   const express = require("express");
   const app = express();
-
+  const crypto = require("crypto");
   app.get("/", (req, res) => {
     crypto.pbkdf2("a", "b", 100000, 512, "sha512", () => {
       res.send("hello");
     });
 
-    console.log("Loaded");
+    console.log("Loaded hashing");
   });
 
   app.get("/fast", (req, res) => {
