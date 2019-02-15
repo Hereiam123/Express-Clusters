@@ -1,7 +1,6 @@
 //Is the file executed in master mode
 const express = require("express");
 const app = express();
-const crypto = require("crypto");
 const Worker = require("webworker-threads").Worker;
 
 app.get("/", (req, res) => {
@@ -15,7 +14,9 @@ app.get("/", (req, res) => {
     };
   });
 
-  worker.onmessage = function() {};
+  worker.onmessage = function(myCount) {
+    console.log(myCount);
+  };
 
   worker.postMessage();
 });
