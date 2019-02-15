@@ -1,30 +1,26 @@
 const cluster = require("cluster");
+const crypto = require("crypto");
 
 //Is the file executed in master mode
 if (cluster.isMaster) {
   //Index.js executed in child mode in else
-  cluster.fork();
-  cluster.fork();
-  cluster.fork();
+  console.log("True Master");
   cluster.fork();
 } else {
-  cluster.on("death", function(worker) {
-    console.log("worker " + worker.pid + " died");
-  });
   const express = require("express");
   const app = express();
-  function doSomething(duration) {
-    const start = Date.now();
-    while (Date.now() - start < duration) {}
-  }
 
   app.get("/", (req, res) => {
-    doSomething(5000);
-    res.send("hello");
+    crypto.pbkdf2("a", "b", 100000, 512, "sha512", () => {
+      res.send("hello");
+    });
+
+    console.log("Loaded");
   });
 
   app.get("/fast", (req, res) => {
     res.send("This was the quick one");
+    console.log("Loaded fast");
   });
 
   app.listen(3000);
